@@ -4,42 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harsh Modi | AI/ML Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* --- Global Styles --- */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        /* --- Custom Properties (CSS Variables) --- */
+        :root {
+            --bg-dark-navy: #0a192f;
+            --bg-light-navy: #112240;
+            --text-lightest: #ccd6f6;
+            --text-dark: #8892b0;
+            --accent-teal: #64ffda;
+            --white: #e6f1ff;
+        }
+
+        /* --- Global Styles & Resets --- */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f7f6;
-            color: #333;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark-navy);
+            color: var(--text-lightest);
             line-height: 1.6;
         }
         .container {
-            max-width: 960px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
         }
-        h1, h2, h3 {
-            font-weight: 600;
-            color: #1a252f;
+        section {
+            padding: 100px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-        a {
-            color: #007BFF;
-            text-decoration: none;
-            transition: color 0.3s;
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        a:hover {
-            color: #0056b3;
+        h2 {
+            font-size: 2.5rem;
+            color: var(--white);
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-teal);
+            margin: 10px auto 0;
+            border-radius: 2px;
         }
 
         /* --- Header & Navigation --- */
-        header {
-            background: #ffffff;
-            padding: 1rem 0;
-            border-bottom: 1px solid #e0e0e0;
-            position: sticky;
+        .header {
+            position: fixed;
+            width: 100%;
             top: 0;
-            z-index: 1000;
+            left: 0;
+            z-index: 100;
+            background-color: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            transition: top 0.3s;
         }
         nav {
             display: flex;
@@ -48,251 +86,363 @@
         }
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 700;
+            color: var(--accent-teal);
+            text-decoration: none;
         }
-        nav ul {
+        .nav-links {
             list-style: none;
-            margin: 0;
-            padding: 0;
             display: flex;
         }
-        nav ul li {
-            margin-left: 25px;
+        .nav-links li {
+            margin-left: 30px;
         }
-        nav a {
-            font-weight: 500;
+        .nav-links a {
+            color: var(--text-lightest);
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s;
         }
-        
-        /* --- Sections --- */
-        section {
-            padding: 60px 0;
-        }
-        section:nth-child(even) {
-            background-color: #ffffff;
+        .nav-links a:hover {
+            color: var(--accent-teal);
         }
 
         /* --- Hero Section --- */
         .hero {
-            text-align: center;
-            padding: 80px 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: left;
         }
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--white);
+            margin: 0;
+        }
+        .hero h3 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--text-dark);
+            margin-top: 10px;
         }
         .hero p {
-            font-size: 1.25rem;
-            color: #555;
-            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            max-width: 600px;
+            margin: 20px 0 40px;
         }
         .cta-button {
             display: inline-block;
-            background-color: #007BFF;
-            color: #fff;
             padding: 12px 25px;
+            border: 1px solid var(--accent-teal);
             border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            color: var(--accent-teal);
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
         }
         .cta-button:hover {
-            background-color: #0056b3;
-            color: #fff;
+            background-color: rgba(100, 255, 218, 0.1);
         }
 
         /* --- About Section --- */
-        #about h2 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
         .about-content {
-            display: flex;
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            gap: 50px;
             align-items: center;
-            gap: 40px;
         }
-        .about-text {
-            flex: 2;
+        .about-text p {
+            margin-bottom: 15px;
+            color: var(--text-dark);
         }
         .about-image {
-            flex: 1;
-            text-align: center;
+            position: relative;
         }
         .about-image img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 300px;
+            position: relative;
+            z-index: 2; /* FIXED: Set to 2 to bring the image to the front */
         }
-        
+        .about-image::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            max-width: 300px;
+            height: 100%;
+            top: 20px;
+            left: 20px;
+            border-radius: 8px;
+            z-index: 1; /* This stays at 1, behind the image */
+        }
+
+        /* --- Skills Section --- */
+        /* NOTE: The old .skills-grid and .skill-item styles have been removed */
+        .skills-container h3 {
+            color: var(--accent-teal);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--bg-light-navy);
+            padding-bottom: 10px;
+        }
+        .skills-category {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .skills-category img {
+            transition: transform 0.2s ease-in-out;
+        }
+        .skills-category img:hover {
+            transform: scale(1.05);
+        }
+
         /* --- Projects Section --- */
-        #projects h2 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
         }
         .project-card {
-            background: #fff;
-            border: 1px solid #e0e0e0;
+            background-color: var(--bg-light-navy);
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 25px;
+            box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+            transition: transform 0.3s;
         }
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+            transform: translateY(-7px);
         }
-        .project-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+        .project-card h3 {
+            color: var(--white);
+            margin-bottom: 10px;
         }
-        .project-info {
-            padding: 20px;
+        .project-card p {
+            color: var(--text-dark);
+            margin-bottom: 20px;
         }
-        .project-info h3 {
-            margin-top: 0;
+        .project-tech {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
         }
         .project-links a {
+            color: var(--text-lightest);
+            font-size: 1.5rem;
             margin-right: 15px;
-            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .project-links a:hover {
+            color: var(--accent-teal);
         }
 
         /* --- Contact Section --- */
         #contact {
             text-align: center;
         }
-        .contact-links {
-            margin-top: 20px;
-        }
-        .contact-links a {
-            margin: 0 15px;
-            font-size: 1.1rem;
+        #contact p {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            color: var(--text-dark);
         }
 
         /* --- Footer --- */
         footer {
             text-align: center;
             padding: 20px 0;
-            background: #1a252f;
-            color: #fff;
+            color: var(--text-dark);
+            font-size: 0.9rem;
         }
         
         /* --- Responsive Design --- */
         @media (max-width: 768px) {
-            .logo {
-                font-size: 1.2rem;
-            }
-            nav ul li {
-                margin-left: 15px;
-            }
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .about-content {
-                flex-direction: column;
-            }
+            .nav-links { display: none; }
+            .about-content { grid-template-columns: 1fr; }
+            .about-image { margin: 40px auto 0; }
         }
+
     </style>
 </head>
 <body>
-
-    <header>
+    <header class="header">
         <nav class="container">
-            <a href="#" class="logo">Harsh Modi</a>
-            <ul>
+            <a href="#" class="logo">HM</a>
+            <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="home" class="hero">
-            <div class="container">
-                <h1>Harsh Modi</h1>
-                <p>M.S. in Computer Science at ASU | AI/ML & Software Development</p>
-                <a href="#projects" class="cta-button">View My Work</a>
+        <section id="home" class="hero container">
+            <div>
+                <h1>Harsh Modi.</h1>
+                <h3>I build things for the web and with AI.</h3>
+                <p>I'm a Computer Science graduate student at ASU specializing in Artificial Intelligence and Machine Learning, with a passion for creating innovative software solutions.</p>
+                <a href="mailto:[YOUR_EMAIL@example.com]" class="cta-button">Get In Touch</a>
             </div>
         </section>
 
-        <section id="about">
-            <div class="container">
-                <h2>About Me</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>
-                            I am a graduate student at Arizona State University pursuing a Master's in Computer Science with a keen interest in Artificial Intelligence and Machine Learning. I enjoy building intelligent applications that solve real-world problems, from developing predictive models to creating full-stack software. My core skills include Python, PyTorch, SQL, and building scalable systems. I am passionate about continuous learning and applying my skills to impactful projects.
-                        </p>
-                    </div>
-                    <div class="about-image">
-                        <img src="https://via.placeholder.com/200" alt="Harsh Modi">
-                    </div>
+        <section id="about" class="container">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="harshprofile.png" alt="Harsh Modi">
+                </div>
+                <div class="about-text">
+                    <p>
+                        Hello! My name is Harsh, and I enjoy creating things that live on the internet. My interest in AI/ML started back when I realized the power of data-driven insights. Now, I'm focused on building practical, intelligent applications.
+                    </p>
+                    <p>
+                        As a student at Arizona State University, I'm deepening my knowledge in statistical machine learning, deep learning, and software engineering principles. I'm always looking for opportunities to apply these skills to solve complex problems.
+                    </p>
                 </div>
             </div>
         </section>
+        <br>
 
-        <section id="projects">
-            <div class="container">
-                <h2>My Projects</h2>
-                <div class="project-grid">
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/400x200.png?text=Sentiment+Analysis" alt="Project 1 Thumbnail">
-                        <div class="project-info">
-                            <h3>Sentiment Analysis Web App</h3>
-                            <p>A web application that classifies text input as positive, negative, or neutral using a Logistic Regression model trained on movie reviews.</p>
-                            <p><strong>Tech Stack:</strong> Python, Scikit-learn, Flask, HTML/CSS</p>
-                            <div class="project-links">
-                                <a href="[LINK_TO_YOUR_GITHUB_REPO]" target="_blank">View Code</a>
-                                </div>
-                        </div>
+        <section id="projects" class="container">
+            <h2>Things I've Built</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h3>Iris Flower Classification</h3>
+                    <p>A machine learning model trained to classify Iris flower species (Setosa, Versicolor, Virginica) using a Support Vector Machine, deployed with a Streamlit web app.</p>
+                    <ul class="project-tech">
+                        <li>Python</li>
+                        <li>Scikit-learn</li>
+                        <li>Streamlit</li>
+                        <li>Jupyter</li>
+                    </ul>
+                    <div class="project-links">
+                        <a href="https://github.com/modiharsh23/Iris-flower-classification" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     </div>
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/400x200.png?text=CRUD+Application" alt="Project 2 Thumbnail">
-                        <div class="project-info">
-                            <h3>Django CRUD Operations App</h3>
-                            <p>A full-stack web application built with Django for managing a database of items, demonstrating Create, Read, Update, and Delete functionality.</p>
-                            <p><strong>Tech Stack:</strong> Python, Django, SQLite3, HTML/CSS</p>
-                            <div class="project-links">
-                                <a href="[LINK_TO_YOUR_GITHUB_REPO]" target="_blank">View Code</a>
-                                </div>
+                </div>
+                <div class="project-card">
+                    <h3>Django StudentDMS CRUD App</h3>
+                    <p>A web application demonstrating full CRUD (Create, Read, Update, Delete) functionality for managing a database of items, built with Django.</p>
+                    <ul class="project-tech">
+                        <li>Python</li>
+                        <li>Django</li>
+                        <li>SQLite3</li>
+                        <li>Bootstrap</li>
+                    </ul>
+                    <div class="project-links">
+                        <a href="https://github.com/modiharsh23/django-StudentDMS-crud" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Billing System</h3>
+                    <p>A simple retail billing system with a graphical user interface (GUI) developed using Python and Tkinter for generating and managing bills for various menu items.</p>
+                    <ul class="project-tech">
+                        <li>Python</li>
+                        <li>Tkinter</li>
+                        <li>GUI Development</li>
+                    </ul>
+                    <div class="project-links">
+                        <a href="https://github.com/modiharsh23/billing-system-using-tkinter-python" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                         </div>
-                    </div>
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/400x200.png?text=Data+Visualization" alt="Project 3 Thumbnail">
-                        <div class="project-info">
-                            <h3>Machine Learning Visualizer</h3>
-                            <p>An interactive tool to visualize decision boundaries for various classification algorithms on 2D datasets. Implemented with PyTorch.</p>
-                            <p><strong>Tech Stack:</strong> Python, PyTorch, Matplotlib, NumPy</p>
-                            <div class="project-links">
-                                <a href="[LINK_TO_YOUR_GITHUB_REPO]" target="_blank">View Code</a>
-                                </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
+        <br>
 
-        <section id="contact">
-            <div class="container">
-                <h2>Get In Touch</h2>
-                <p>I'm always open to discussing new projects, creative ideas, or opportunities. Feel free to reach out!</p>
-                <p><strong><a href="mailto:[YOUR_EMAIL@example.com]">your.email@example.com</a></strong></p>
-                <div class="contact-links">
-                    <a href="[LINK_TO_YOUR_LINKEDIN]" target="_blank">LinkedIn</a>
-                    <a href="[LINK_TO_YOUR_GITHUB]" target="_blank">GitHub</a>
+        <section id="skills" class="container">
+            <h2>My Tech Stack</h2>
+            <div class="skills-container">
+                <h3>Languages & Frameworks</h3>
+                <div class="skills-category">
+                    <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+                    <img src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=R&logoColor=white" alt="R"/>
+                    <img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white" alt="Java"/>
+                    <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=white" alt="C"/>
+                    <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white" alt="C++"/>
+                    <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5"/>
+                    <img src="https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white" alt="CSS"/>
+                    <img src="https://img.shields.io/badge/JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white" alt="JavaScript"/>
+                    <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React"/>
+                    <img src="https://img.shields.io/badge/node-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js"/>
+                    <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django"/>
+                    <img src="https://img.shields.io/badge/Flask-3BABC3?style=for-the-badge&logo=flask&logoColor=white" alt="Flask"/>
+                </div>
+
+                <h3>Data Science, ML & Data Engineering</h3>
+                <div class="skills-category">
+                    <img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas"/>
+                    <img src="https://img.shields.io/badge/numpy-013243?style=for-the-badge&logo=numpy&logoColor=white" alt="NumPy"/>
+                    <img src="https://img.shields.io/badge/scikitlearn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="Scikit-learn"/>
+                    <img src="https://img.shields.io/badge/tensorflow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" alt="TensorFlow"/>
+                    <img src="https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch"/>
+                    <img src="https://img.shields.io/badge/Matplotlib-7A76FF?style=for-the-badge&logo=&logoColor=white" alt="Matplotlib"/>
+                    <img src="https://img.shields.io/badge/Seaborn-ECD53F?style=for-the-badge&logo=&logoColor=white" alt="Seaborn"/>
+                    <img src="https://img.shields.io/badge/NLP-E6502A?style=for-the-badge&logo=&logoColor=white" alt="NLP"/>
+                    <img src="https://img.shields.io/badge/deepl-0F2B46?style=for-the-badge&logo=deepl&logoColor=white" alt="Deep Learning"/>
+                    <img src="https://img.shields.io/badge/Machine Learning-FF4C00?style=for-the-badge&logo=&logoColor=white" alt="Machine Learning"/>
+                    <img src="https://img.shields.io/badge/Data Science-FD3456?style=for-the-badge&logo=&logoColor=white" alt="Data Science"/>
+                    <img src="https://img.shields.io/badge/Statistical technique-6D28D9?style=for-the-badge&logo=&logoColor=white" alt="Statistical Techniques"/>
+                </div>
+
+                <h3>Databases</h3>
+                <div class="skills-category">
+                    <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL"/>
+                    <img src="https://img.shields.io/badge/postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"/>
+                    <img src="https://img.shields.io/badge/sqlite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite"/>
+                    <img src="https://img.shields.io/badge/mongodb-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB"/>
+                    <img src="https://img.shields.io/badge/Nosql-29B5E8?style=for-the-badge&logo=&logoColor=white" alt="NoSQL"/>
+                </div>
+
+                <h3>Tools & Platforms</h3>
+                <div class="skills-category">
+                    <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git"/>
+                    <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+                    <img src="https://img.shields.io/badge/VScode-5395FD?style=for-the-badge&logo=&logoColor=white" alt="VS Code"/>
+                    <img src="https://img.shields.io/badge/jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white" alt="Jupyter"/>
+                    <img src="https://img.shields.io/badge/pycharm-000000?style=for-the-badge&logo=pycharm&logoColor=white" alt="PyCharm"/>
+                    <img src="https://img.shields.io/badge/aws-F2BB13?style=for-the-badge&logo=&logoColor=white" alt="AWS"/>
+                    <img src="https://img.shields.io/badge/azure-004088?style=for-the-badge&logo=&logoColor=white" alt="Azure"/>
+                    <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma"/>
+                    <img src="https://img.shields.io/badge/powerbi-FE5F50?style=for-the-badge&logo=&logoColor=white" alt="Power BI"/>
+                    <img src="https://img.shields.io/badge/Excel-34A853?style=for-the-badge&logo=googlesheets&logoColor=white" alt="Excel"/>
                 </div>
             </div>
+        </section>
+        <br>
+        
+        <section id="contact" class="container">
+            <h2>Get In Touch</h2>
+            <p>I'm currently seeking opportunities for internships and full-time roles. My inbox is always open, whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
+            <a href="mailto:[YOUR_EMAIL@example.com]" class="cta-button">Say Hello</a>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Harsh Modi. All rights reserved.</p>
+        <p>Designed & Built by Harsh Modi</p>
     </footer>
 
+    <script>
+        // Simple script for scroll animations
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
 </body>
 </html>
